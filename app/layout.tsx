@@ -33,6 +33,4 @@ export default function RootLayout({
   )
 }
 
-
-
 import '../styles/globals.css'

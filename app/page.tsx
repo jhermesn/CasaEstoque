@@ -48,6 +48,19 @@ export default function Home() {
     verificarNotificacoes()
   }, [produtos, carregouLS])
 
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+          .register("/sw.js")
+          .then(() => {
+            console.log("Service Worker registrado com sucesso!")
+          })
+          .catch((error) => {
+            console.error("Erro ao registrar o Service Worker:", error)
+          })
+    }
+  }, [])
+
   const adicionarProdutos = (novosProdutos: Produto[]) => {
     setProdutos((antigos) => [...antigos, ...novosProdutos])
   }

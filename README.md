@@ -1,6 +1,6 @@
 ## CasaEstoque
 
-Este repositório contém o código-fonte do **CasaEstoque**, uma aplicação em Next.js e React que gerencia o estoque doméstico de produtos. O principal objetivo é cadastrar produtos, controlar datas de validade e gerar alertas de expiração (_notificações ou toasts_) diretamente no navegador do usuário, salvando os dados localmente via **Local Storage**.
+Este repositório contém o código-fonte do **CasaEstoque**, uma aplicação PWA em Next.js e React que gerencia o estoque doméstico de produtos. O principal objetivo é cadastrar produtos, controlar datas de validade e gerar alertas de expiração (_notificações ou toasts_) diretamente no navegador do usuário, salvando os dados localmente via **Local Storage**.
 
 ---
 

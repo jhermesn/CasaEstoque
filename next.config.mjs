@@ -1,13 +1,18 @@
-const isProd = process.env.NODE_ENV === "production"
+import withPWA from 'next-pwa'
 
+const isProd = process.env.NODE_ENV === 'production'
+
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
-  basePath: "/CasaEstoque",
-  assetPrefix: isProd ? "/CasaEstoque/" : undefined,
-  images: {
-    unoptimized: true,
-  },
-  distDir: "docs",
+  output: 'export',
+  basePath: '/CasaEstoque',
+  assetPrefix: isProd ? '/CasaEstoque/' : undefined,
+  images: { unoptimized: true },
+  distDir: 'docs',
 }
 
-export default nextConfig
+export default withPWA({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+})(nextConfig)
