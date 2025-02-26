@@ -52,21 +52,32 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     })
   }
 
-  const calcularDataValidade = (produto: Produto) => {
+  // Calcula a data de validade efetiva considerando se o produto foi aberto
+  const getDataValidadeEfetiva = (produto: Produto): Date => {
     if (produto.aberto && produto.dataAbertura) {
-      const dataValidade = new Date(produto.dataAbertura)
-      dataValidade.setDate(dataValidade.getDate() + produto.diasValidadeAposAberto)
-      return formatarData(dataValidade)
+      const dataValidadeEfetiva = new Date(produto.dataAbertura)
+      dataValidadeEfetiva.setDate(dataValidadeEfetiva.getDate() + produto.diasValidadeAposAberto)
+      return dataValidadeEfetiva
     }
-    return formatarData(produto.dataValidade)
+    return produto.dataValidade
   }
 
-  const gerarPlanilha = () => {
-    const dadosPlanilha = produtosLocais.map((produto) => {
-      const dataValidadeCalculada = produto.aberto
-          ? calcularDataValidade(produto)
-          : formatarData(produto.dataValidade)
+  const calcularDataValidade = (produto: Produto) => {
+    const dataEfetiva = getDataValidadeEfetiva(produto)
+    return formatarData(dataEfetiva)
+  }
 
+  // Ordena os produtos primeiro pelo nome e, em caso de igualdade, pela data de validade efetiva
+  const produtosOrdenados = [...produtosLocais].sort((a, b) => {
+    if (a.nome < b.nome) return -1
+    if (a.nome > b.nome) return 1
+    return getDataValidadeEfetiva(a).getTime() - getDataValidadeEfetiva(b).getTime()
+  })
+
+  const gerarPlanilha = () => {
+    // Utiliza os produtos já ordenados para gerar a planilha
+    const dadosPlanilha = produtosOrdenados.map((produto) => {
+      const dataValidadeCalculada = calcularDataValidade(produto)
       return {
         Nome: produto.nome,
         "Data de Validade": dataValidadeCalculada,
@@ -110,12 +121,6 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     }
     return buf
   }
-
-  const produtosOrdenados = [...produtosLocais].sort((a, b) => {
-    if (a.nome < b.nome) return -1
-    if (a.nome > b.nome) return 1
-    return a.dataValidade.getTime() - b.dataValidade.getTime()
-  })
 
   return (
       <>
