@@ -2,10 +2,9 @@
   "name": "Casa Estoque",
   "short_name": "Estoque",
   "description": "Gerenciador de estoque doméstico",
-  "start_url": "/CasaEstoque",
-    "scope": "/CasaEstoque",
+  "start_url": "/CasaEstoque/",
+  "scope": "/CasaEstoque/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000"
 }
-

@@ -15,4 +15,6 @@ export default withPWA({
   dest: 'public',
   register: true,
   skipWaiting: true,
+  disable: !isProd,
+  buildExcludes: [/chunks\/.*$/]
 })(nextConfig)

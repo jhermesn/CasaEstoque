@@ -55,14 +55,13 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
   const calcularDataValidade = (produto: Produto) => {
     if (produto.aberto && produto.dataAbertura) {
       const dataValidade = new Date(produto.dataAbertura)
-      dataValidade.setDate(
-          dataValidade.getDate() + produto.diasValidadeAposAberto
-      )
+      dataValidade.setDate(dataValidade.getDate() + produto.diasValidadeAposAberto)
       return formatarData(dataValidade)
     }
     return formatarData(produto.dataValidade)
   }
 
+  // Geração de planilha em XLSX
   const gerarPlanilha = () => {
     const dadosPlanilha = produtosLocais.map((produto) => {
       const dataValidadeCalculada = produto.aberto
@@ -113,6 +112,8 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     return buf
   }
 
+  // Ordena primeiro por nome do produto (a.nome vs b.nome) e,
+  // em seguida, por data de validade (a.dataValidade vs b.dataValidade).
   const produtosOrdenados = [...produtosLocais].sort((a, b) => {
     if (a.nome < b.nome) return -1
     if (a.nome > b.nome) return 1
@@ -141,7 +142,6 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
                           onCheckedChange={() => toggleAberto(index)}
                       />
                       <span>{produto.aberto ? "Aberto" : "Fechado"}</span>
-
                       <Button
                           variant="destructive"
                           className="ml-auto"
