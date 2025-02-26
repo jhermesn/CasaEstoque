@@ -61,7 +61,6 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     return formatarData(produto.dataValidade)
   }
 
-  // Geração de planilha em XLSX
   const gerarPlanilha = () => {
     const dadosPlanilha = produtosLocais.map((produto) => {
       const dataValidadeCalculada = produto.aberto
@@ -112,8 +111,6 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     return buf
   }
 
-  // Ordena primeiro por nome do produto (a.nome vs b.nome) e,
-  // em seguida, por data de validade (a.dataValidade vs b.dataValidade).
   const produtosOrdenados = [...produtosLocais].sort((a, b) => {
     if (a.nome < b.nome) return -1
     if (a.nome > b.nome) return 1
