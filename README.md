@@ -23,10 +23,7 @@ Este repositório contém o código-fonte do **CasaEstoque**, uma aplicação PW
     - Dias de validade após aberto
 2. **Listagem e Remoção**: Visualização em tabela para atualizar dados e remover produtos rapidamente.
 3. **Controle de Aberto/Fechado**: Alteração do estado de “aberto” registra a data de abertura para calcular a validade real.
-4. **Alertas de Expiração**:
-    - Notificação no próprio navegador (se permitido) ou **toast** interno.
-    - Alertas para produtos que expiram **hoje, amanhã** ou em **7 dias**.
-5. **Exportação de Planilha (Excel)**: Gera e baixa um arquivo `.xlsx` com todos os produtos, datas e status.
+4. **Exportação de Planilha (Excel)**: Gera e baixa um arquivo `.xlsx` com todos os produtos, datas e status.
 
 ---
 
