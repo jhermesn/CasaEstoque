@@ -36,8 +36,9 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     onUpdate(novosProdutos)
   }
 
-  const toggleAberto = (index: number) => {
-    const produto = produtosLocais[index]
+  const toggleAberto = (produto: Produto) => {
+    const index = produtosLocais.findIndex(p => p === produto)
+    if (index === -1) return
     atualizarProduto(index, {
       aberto: !produto.aberto,
       dataAbertura: !produto.aberto ? new Date() : undefined,
@@ -52,7 +53,6 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     })
   }
 
-  // Calcula a data de validade efetiva considerando se o produto foi aberto
   const getDataValidadeEfetiva = (produto: Produto): Date => {
     if (produto.aberto && produto.dataAbertura) {
       const dataValidadeEfetiva = new Date(produto.dataAbertura)
@@ -67,16 +67,20 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
     return formatarData(dataEfetiva)
   }
 
-  // Ordena os produtos primeiro pelo nome e, em caso de igualdade, pela data de validade efetiva
-  const produtosOrdenados = [...produtosLocais].sort((a, b) => {
+  const produtosOrdenadosTabela = [...produtosLocais].sort((a, b) => {
+    if (a.nome < b.nome) return -1
+    if (a.nome > b.nome) return 1
+    return 0
+  })
+
+  const produtosOrdenadosPlanilha = [...produtosLocais].sort((a, b) => {
     if (a.nome < b.nome) return -1
     if (a.nome > b.nome) return 1
     return getDataValidadeEfetiva(a).getTime() - getDataValidadeEfetiva(b).getTime()
   })
 
   const gerarPlanilha = () => {
-    // Utiliza os produtos já ordenados para gerar a planilha
-    const dadosPlanilha = produtosOrdenados.map((produto) => {
+    const dadosPlanilha = produtosOrdenadosPlanilha.map((produto) => {
       const dataValidadeCalculada = calcularDataValidade(produto)
       return {
         Nome: produto.nome,
@@ -133,7 +137,7 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {produtosOrdenados.map((produto, index) => (
+            {produtosOrdenadosTabela.map((produto, index) => (
                 <TableRow key={index}>
                   <TableCell>{produto.nome}</TableCell>
                   <TableCell>{calcularDataValidade(produto)}</TableCell>
@@ -141,13 +145,16 @@ export function TabelaProdutos({ produtos, onUpdate }: TabelaProdutosProps) {
                     <div className="flex items-center space-x-2">
                       <Switch
                           checked={produto.aberto}
-                          onCheckedChange={() => toggleAberto(index)}
+                          onCheckedChange={() => toggleAberto(produto)}
                       />
                       <span>{produto.aberto ? "Aberto" : "Fechado"}</span>
                       <Button
                           variant="destructive"
                           className="ml-auto"
-                          onClick={() => removerProduto(index)}
+                          onClick={() => {
+                            const idx = produtosLocais.findIndex(p => p === produto)
+                            if (idx !== -1) removerProduto(idx)
+                          }}
                       >
                         Remover
                       </Button>
